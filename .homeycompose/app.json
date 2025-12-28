@@ -7,6 +7,7 @@
     "local",
     "cloud"
   ],
+  "brandColor": "#00b2a9",
   "name": {
     "en": "SAUR Water Consumption",
     "fr": "Consommation d'eau SAUR"
