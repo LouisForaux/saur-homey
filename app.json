@@ -57,6 +57,9 @@
         "local",
         "cloud"
       ],
+      "connectivity": [
+        "cloud"
+      ],
       "images": {
         "small": "/drivers/water-consumption/assets/images/small.png",
         "large": "/drivers/water-consumption/assets/images/large.png",
