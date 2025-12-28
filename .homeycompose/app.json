@@ -1,0 +1,71 @@
+{
+  "id": "fr.saurclient.water",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local",
+    "cloud"
+  ],
+  "name": {
+    "en": "SAUR Water Consumption",
+    "fr": "Consommation d'eau SAUR"
+  },
+  "description": {
+    "en": "Monitor your water consumption from SAUR",
+    "fr": "Surveillez votre consommation d'eau SAUR"
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Louis FORAUX",
+    "email": "louis@mtvr.fr"
+  },
+  "contributors": {
+    "developers": []
+  },
+  "bugs": {
+    "url": "https://github.com/louisforaux/fr.saurclient.water/issues"
+  },
+  "source": "https://github.com/louisforaux/fr.saurclient.water",
+  "support": "https://github.com/louisforaux/fr.saurclient.water/issues",
+  "capabilities": {
+    "measure_water": {
+      "type": "number",
+      "title": {
+        "en": "Water consumption",
+        "fr": "Consommation d'eau"
+      },
+      "units": {
+        "en": "m³",
+        "fr": "m³"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "decimals": 3
+    },
+    "meter_water": {
+      "type": "number",
+      "title": {
+        "en": "Water meter",
+        "fr": "Compteur d'eau"
+      },
+      "units": {
+        "en": "m³",
+        "fr": "m³"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "decimals": 3
+    }
+  }
+}

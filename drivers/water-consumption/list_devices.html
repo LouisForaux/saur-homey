@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .device-list {
+            padding: 20px;
+        }
+
+        .device-item {
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .device-item:hover {
+            border-color: #00A5FF;
+            background-color: #f5f5f5;
+        }
+
+        .device-item.selected {
+            border-color: #00A5FF;
+            background-color: #e3f2fd;
+        }
+
+        .device-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .device-id {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #00A5FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0086CC;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="device-list" id="deviceList">
+        <p id="loading">Chargement des appareils...</p>
+    </div>
+    <div class="button-container">
+        <button id="addButton" disabled onclick="addDevice()">Ajouter</button>
+    </div>
+
+    <script>
+        let selectedDevice = null;
+        let devices = [];
+
+        // Charger les appareils disponibles
+        async function loadDevices() {
+            try {
+                devices = await Homey.emit('list_devices');
+                displayDevices(devices);
+            } catch (error) {
+                document.getElementById('loading').textContent = 'Erreur lors du chargement des appareils';
+                console.error(error);
+            }
+        }
+
+        // Afficher les appareils
+        function displayDevices(deviceList) {
+            const container = document.getElementById('deviceList');
+            const loading = document.getElementById('loading');
+
+            if (deviceList.length === 0) {
+                loading.textContent = 'Aucun appareil trouvé';
+                return;
+            }
+
+            loading.style.display = 'none';
+
+            deviceList.forEach((device, index) => {
+                const deviceItem = document.createElement('div');
+                deviceItem.className = 'device-item';
+                deviceItem.onclick = () => selectDevice(index);
+
+                deviceItem.innerHTML = `
+                    <div class="device-name">${device.name}</div>
+                    <div class="device-id">ID: ${device.data.id}</div>
+                `;
+
+                container.appendChild(deviceItem);
+            });
+
+            // Sélectionner automatiquement le premier appareil
+            if (deviceList.length === 1) {
+                selectDevice(0);
+            }
+        }
+
+        // Sélectionner un appareil
+        function selectDevice(index) {
+            // Retirer la sélection précédente
+            const items = document.querySelectorAll('.device-item');
+            items.forEach(item => item.classList.remove('selected'));
+
+            // Ajouter la nouvelle sélection
+            items[index].classList.add('selected');
+            selectedDevice = devices[index];
+
+            // Activer le bouton
+            document.getElementById('addButton').disabled = false;
+        }
+
+        // Ajouter l'appareil sélectionné
+        async function addDevice() {
+            if (!selectedDevice) return;
+
+            try {
+                await Homey.addDevice(selectedDevice);
+                await Homey.done();
+            } catch (error) {
+                await Homey.alert('Erreur lors de l\'ajout de l\'appareil');
+                console.error(error);
+            }
+        }
+
+        // Charger les appareils au démarrage
+        Homey.ready();
+        loadDevices();
+    </script>
+</body>
+
+</html>
