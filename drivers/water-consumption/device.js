@@ -30,10 +30,10 @@ class WaterConsumptionDevice extends Homey.Device {
         // Première mise à jour des données
         await this.updateConsumption();
 
-        // Planifier les mises à jour toutes les 15 minutes
+        // Planifier les mises à jour toutes les heures
         this.updateInterval = setInterval(async () => {
             await this.updateConsumption();
-        }, 15 * 60 * 1000); // 15 minutes
+        }, 60 * 60 * 1000); // 1 hour
 
         this.log('Device initialized successfully');
     }
